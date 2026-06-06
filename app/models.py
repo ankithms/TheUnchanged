@@ -47,7 +47,7 @@ class Cart(models.Model):
 
 
 class stateModel(models.Model):
-    state_name = models.CharField(max_length=30, null=True)
+    state_name = models.CharField(max_length=100, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

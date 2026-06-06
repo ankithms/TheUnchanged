@@ -12,7 +12,46 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
-from local_settings import *
+try:
+    from local_settings import *
+except ImportError:
+    import os
+    import urllib.parse
+    
+    secret_key = os.environ.get('SECRET_KEY', 'django-insecure-production-default-key-for-the-unchanged')
+    hash_key = os.environ.get('HASH_KEY', 'production-default-hash-key')
+    superuser_name = os.environ.get('SUPERUSER_NAME', 'admin')
+    superuser_password = os.environ.get('SUPERUSER_PASSWORD', 'adminpassword')
+    email_user = os.environ.get('EMAIL_USER', '')
+    email_password = os.environ.get('EMAIL_PASSWORD', '')
+    
+    # Parse DATABASE_URL for Postgres connection
+    db_url = os.environ.get('DATABASE_URL')
+    if db_url:
+        urllib.parse.uses_netloc.append("postgres")
+        url = urllib.parse.urlparse(db_url)
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.postgresql',
+                'NAME': url.path[1:],
+                'USER': url.username,
+                'PASSWORD': url.password,
+                'HOST': url.hostname,
+                'PORT': url.port,
+                'OPTIONS': {
+                    'sslmode': 'require',
+                }
+            }
+        }
+    else:
+        # Fallback to local SQLite if DATABASE_URL is not set
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': os.path.join(Path(__file__).resolve().parent.parent, 'db.sqlite3'),
+            }
+        }
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -119,12 +158,13 @@ WSGI_APPLICATION = 'ecom_philos.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+if 'DATABASES' not in locals():
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
     }
-}
 
 
 
