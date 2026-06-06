@@ -2,7 +2,11 @@ import React, { createContext, useState, useEffect, useContext } from 'react';
 
 const AuthContext = createContext();
 
-export const API_BASE = 'http://127.0.0.1:8000/api';
+const isLocal = typeof window !== 'undefined' && (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+export const API_BASE = isLocal 
+  ? 'http://127.0.0.1:8000/api' 
+  : 'https://theunchanged.onrender.com/api';
+
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -108,7 +112,10 @@ export const AuthProvider = ({ children }) => {
 
 export const useAuth = () => useContext(AuthContext);
 
-export const MEDIA_BASE = 'http://127.0.0.1:8000/media';
+export const MEDIA_BASE = isLocal 
+  ? 'http://127.0.0.1:8000/media' 
+  : 'https://theunchanged.onrender.com/media';
+
 
 export const getMediaUrl = (path) => {
   if (!path) return '';
