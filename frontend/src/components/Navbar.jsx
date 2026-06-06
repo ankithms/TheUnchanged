@@ -89,7 +89,8 @@ const Navbar = () => {
               fontWeight: 800,
               letterSpacing: '0.08em',
               textTransform: 'uppercase',
-              color: 'var(--text-primary)'
+              color: 'var(--text-primary)',
+              whiteSpace: 'nowrap'
             }}>THE UNCHANGED</span>
             <span className="brand-name-short" style={{
               display: 'none',
@@ -106,16 +107,16 @@ const Navbar = () => {
           <div className="desktop-links" style={{
             display: 'flex',
             alignItems: 'center',
-            gap: '24px'
+            gap: '20px'
           }}>
-            <Link to="/" className="nav-link">Shop All</Link>
-            <Link to="/?category=man" className="nav-link">Men's Collection</Link>
-            <Link to="/?category=woman" className="nav-link">Women's Collection</Link>
-            <Link to="/?category=kids" className="nav-link">Kids' Collection</Link>
+            <Link to="/" className="nav-link">Shop</Link>
+            <Link to="/?category=man" className="nav-link">Men</Link>
+            <Link to="/?category=woman" className="nav-link">Women</Link>
+            <Link to="/?category=kids" className="nav-link">Kids</Link>
             <Link to="/about" className="nav-link">Philosophy</Link>
             <Link to="/contact" className="nav-link">Contact</Link>
             {user && (user.is_staff || user.is_superuser) && (
-              <Link to="/admin" className="nav-link" style={{ color: 'var(--accent)' }}>Admin Panel</Link>
+              <Link to="/admin" className="nav-link" style={{ color: 'var(--accent)' }}>Admin</Link>
             )}
           </div>
 
@@ -272,7 +273,7 @@ const Navbar = () => {
         .nav-link:hover::after {
           transform: scaleX(1);
         }
-        @media (max-width: 900px) {
+        @media (max-width: 1100px) {
           .desktop-links, .desktop-search {
             display: none !important;
           }
