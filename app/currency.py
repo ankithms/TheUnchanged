@@ -1,5 +1,10 @@
 import everapi
-from local_settings import apikey
+try:
+    from local_settings import apikey
+except ImportError:
+    import os
+    apikey = os.environ.get('APIKEY', 'mock-apikey')
+
 
 # akhu badu band  karvu padse ..
 class Client(everapi.Client):
